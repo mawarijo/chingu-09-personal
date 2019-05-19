@@ -3,7 +3,7 @@ const request = require("request");
 
 const app = express();
 
-app.get("/", async (req, res) => {
+app.get("/api/landings", async (req, res) => {
   request("https://data.nasa.gov/resource/gh4g-9sfh.json", function(
     error,
     response,
