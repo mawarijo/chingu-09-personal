@@ -1,32 +1,62 @@
 import React from "react";
+import axios from "axios";
 
+import SearchBar from "./SearchBar";
 import Table from "./Table";
 
 class App extends React.Component {
   state = {
-    landings: []
+    error: "",
+    landings: [],
+    search: ""
   };
 
   componentDidMount() {
-    fetch("/api/landings", {
-      headers: {
-        "Content-Type": "application/json"
-      }
-    })
-      .then(res => res.json())
-      .then(data =>
+    this.getData();
+  }
+
+  getData = () => {
+    axios
+      .get("/api/landings", {
+        params: {
+          search: this.state.search
+        }
+      })
+      .then(response =>
         this.setState(() => ({
-          landings: data
+          error: "",
+          landings: response.data
+        }))
+      )
+      .catch(error =>
+        this.setState(() => ({
+          landings: [],
+          error
         }))
       );
-  }
+  };
+
+  onSearchChange = e => {
+    const search = e.target.value;
+    this.setState(() => ({
+      search
+    }));
+  };
+
+  onSearchSubmit = e => {
+    e.preventDefault();
+    this.getData();
+  };
 
   render() {
     const { landings } = this.state;
     return (
       <div>
-        {landings.length > 0 && landings[0].mass}
-        <Table />
+        <SearchBar
+          onChange={this.onSearchChange}
+          onSubmit={this.onSearchSubmit}
+        />
+        <Table landings={landings} />
       </div>
     );
   }

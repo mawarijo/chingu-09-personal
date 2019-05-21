@@ -10,7 +10,16 @@ app.get("/api/landings", async (req, res) => {
     body
   ) {
     if (!error && response.statusCode === 200) {
-      res.json(JSON.parse(body));
+      const query = req.query.search;
+      const landings = JSON.parse(body);
+
+      !!query
+        ? res.json(
+            landings.filter(landing =>
+              landing.name.toLowerCase().includes(query.toLowerCase())
+            )
+          )
+        : res.json(landings);
     } else {
       res.json(error);
     }
