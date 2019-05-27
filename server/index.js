@@ -2,6 +2,7 @@ const express = require("express");
 const request = require("request");
 
 const app = express();
+const PORT = process.env.PORT || 4000;
 
 app.get("/api/landings", async (req, res) => {
   const offset = req.query.offset ? req.query.offset : 0;
@@ -17,6 +18,6 @@ app.get("/api/landings", async (req, res) => {
   });
 });
 
-app.listen(4000);
+app.listen(PORT);
 
 module.exports = app;
