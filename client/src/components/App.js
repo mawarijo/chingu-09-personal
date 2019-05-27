@@ -8,18 +8,26 @@ class App extends React.Component {
   state = {
     error: "",
     landings: [],
-    search: ""
+    offset: 0,
+    query: ""
   };
 
   componentDidMount() {
     this.getData();
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    if (this.state.offset !== prevState.offset) {
+      this.getData();
+    }
+  }
+
   getData = () => {
     axios
       .get("/api/landings", {
         params: {
-          search: this.state.search
+          offset: this.state.offset,
+          query: this.state.query
         }
       })
       .then(response =>
@@ -36,10 +44,18 @@ class App extends React.Component {
       );
   };
 
+  getNextPage = () => {
+    this.setState(prevState => ({ offset: prevState.offset + 100 }));
+  };
+
+  getPreviousPage = () => {
+    this.setState(prevState => ({ offset: prevState.offset - 100 }));
+  };
+
   onSearchChange = e => {
-    const search = e.target.value;
+    const query = e.target.value;
     this.setState(() => ({
-      search
+      query
     }));
   };
 
@@ -56,7 +72,14 @@ class App extends React.Component {
           onChange={this.onSearchChange}
           onSubmit={this.onSearchSubmit}
         />
-        <Table landings={landings} />
+        {!!this.state.landings && <Table landings={landings} />}
+        {!!this.state.error && <p>{this.state.error}</p>}
+        {this.state.offset > 0 && (
+          <button onClick={this.getPreviousPage}>Previous</button>
+        )}
+        {this.state.landings.length === 100 && (
+          <button onClick={this.getNextPage}>Next</button>
+        )}
       </div>
     );
   }
