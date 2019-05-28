@@ -3,6 +3,7 @@ import axios from "axios";
 
 import SearchBar from "./SearchBar";
 import Table from "./Table";
+import "./App.css";
 
 class App extends React.Component {
   state = {
@@ -67,19 +68,27 @@ class App extends React.Component {
   render() {
     const { landings } = this.state;
     return (
-      <div>
+      <div className="page">
         <SearchBar
           onChange={this.onSearchChange}
           onSubmit={this.onSearchSubmit}
         />
         {!!this.state.landings && <Table landings={landings} />}
         {!!this.state.error && <p>{this.state.error}</p>}
-        {this.state.offset > 0 && (
-          <button onClick={this.getPreviousPage}>Previous</button>
-        )}
-        {this.state.landings.length === 100 && (
-          <button onClick={this.getNextPage}>Next</button>
-        )}
+        <div className="nav">
+          <div>
+            {this.state.offset > 0 && (
+              <button class="nav-button" onClick={this.getPreviousPage}>
+                Previous
+              </button>
+            )}
+          </div>
+          {this.state.landings.length === 100 && (
+            <button class="nav-button" onClick={this.getNextPage}>
+              Next
+            </button>
+          )}
+        </div>
       </div>
     );
   }

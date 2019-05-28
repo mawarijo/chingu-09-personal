@@ -1,9 +1,11 @@
 import React from "react";
 
+import "./Table.css";
+
 const Table = ({ landings }) => (
-  <table>
-    <thead>
-      <tr>
+  <table className="table">
+    <thead className="table__head">
+      <tr className="table__row">
         <td>Name</td>
         <td>Id</td>
         <td>Name Type</td>
@@ -15,18 +17,20 @@ const Table = ({ landings }) => (
         <td>Longitude</td>
       </tr>
     </thead>
-    <tbody>
+    <tbody className="table__body">
       {landings.map(landing => (
-        <tr key={landing.id}>
-          <td>{landing.name}</td>
-          <td>{landing.id}</td>
-          <td>{landing.nametype}</td>
-          <td>{landing.recclass}</td>
-          <td>{landing.mass}</td>
-          <td>{landing.fall}</td>
-          <td>{landing.year && landing.year.slice(0, 4)}</td>
-          <td>{landing.reclat}</td>
-          <td>{landing.reclong}</td>
+        <tr className="table__row" key={landing.id}>
+          <td className="table__cell">{landing.name}</td>
+          <td className="table__cell">{landing.id}</td>
+          <td className="table__cell">{landing.nametype}</td>
+          <td className="table__cell">{landing.recclass}</td>
+          <td className="table__cell">{landing.mass}</td>
+          <td className="table__cell">{landing.fall}</td>
+          <td className="table__cell">
+            {landing.year && landing.year.slice(0, 4)}
+          </td>
+          <td className="table__cell">{landing.reclat}</td>
+          <td className="table__cell">{landing.reclong}</td>
         </tr>
       ))}
     </tbody>
